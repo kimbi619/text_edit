@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Photon</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <!-- Wrap your entire app inside .window -->
+    <div class="window">
+
+      <!-- Your app's content goes inside .window-content -->
+      <div class="window-content">
+        <div class="container">
+          <header>
+            <div class="zoom">
+              <button class="addbtn" onclick="increaseFont()">+</button>
+              <button class="subtractbtn" onclick="decreaseFont()">-</button>
+            </div>
+            <div class="save">
+              <button class="savebtn" onclick="saveText()">save</button>
+            </div>
+          </header>
+
+
+          <main>
+            <textarea name="text" id="text" cols="30" rows="10"></textarea>
+          </main>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      const electron = require('electron')
+      const { ipcRenderer } = electron
+      let font = 20;
+      const textarea = document.querySelector('textarea')
+
+      const increaseFont = () => {
+        font = font + 2
+        changeFont(font)
+      }
+      
+      const decreaseFont = () => {
+        font = font - 2
+        changeFont(font)
+      }
+
+      const saveText = () => {
+        let text = textarea.value
+        console.log(text)
+        ipcRenderer.send('save', text)
+      }
+
+      const changeFont = (font) => {
+        textarea.style.fontSize = font + 'px'
+      }
+      changeFont(20)
+
+    </script>
+  </body>
+</html>
